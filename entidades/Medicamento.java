@@ -5,6 +5,10 @@ import excecoes.JaExisteException;
 import java.io.Serializable;
 import java.util.*;
 
+/**
+ * Entidade principal do sistema, recebe
+ * */
+
 public class Medicamento implements Serializable {
 
     private String nome;
@@ -13,10 +17,6 @@ public class Medicamento implements Serializable {
     private Map<String, Doenca> indicadoDoenca;
     private Map<String, Substancia> substancias;
     private Fabricante fabricante;
-
-    //private Map<String, IndicacaoDeMedicamento> indicacoes;
-    //private List<Medicamento> interacoesMedicamentosas;
-    //private List<IndicacaoDeMedicamento> indicacoes;
 
     public Medicamento() {
         this("sem nome", Fabricante.SemFabricante);
@@ -51,13 +51,9 @@ public class Medicamento implements Serializable {
     }
 
     public void cadastrarInteracao(Medicamento m) {
-        if (interageCom(m)) throw new IllegalArgumentException("ele ja interage com este medicamento");
+        if (interacoesMedicamentosas.containsKey(m.keyMap())) throw new IllegalArgumentException("ele ja interage com este medicamento");
         interacoesMedicamentosas.put(m.keyMap(), m);
         m.interacoesMedicamentosas.put(this.keyMap(), this);
-    }
-
-    public boolean interageCom(Medicamento m) {
-        return interacoesMedicamentosas.containsKey(m.keyMap());
     }
 
     public boolean indicadoParaDoenca(Doenca i) {
@@ -72,12 +68,12 @@ public class Medicamento implements Serializable {
         return substancias.containsValue(s);
     }
 
-    public void cadastrarDoenca(Doenca i) {
+    public void cadastrarDoencaNoMedicamento(Doenca i) {
         if (indicadoParaDoenca(i)) throw new IllegalArgumentException("ja existe esta Doença");
         indicadoDoenca.put(i.getNome(), i);
     }
 
-    public void cadastrarSintoma(Sintoma i) {
+    public void cadastrarSintomaNoMedicamento(Sintoma i) {
         if (indicadoParaSintoma(i)) throw new IllegalArgumentException("ja existe este Sintoma");
         indicadoSintoma.put(i.getNome(), i);
     }

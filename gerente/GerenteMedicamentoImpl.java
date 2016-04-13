@@ -1,23 +1,27 @@
 package gerente;
 
+import IO.Gravador;
+import IO.IOTool;
 import entidades.Doenca;
 import entidades.Medicamento;
 import entidades.Sintoma;
 import entidades.Substancia;
 import excecoes.JaExisteException;
+import interfaces.*;
 import interfaces.InterfaceGerente.GerenteMedicamento;
 
+import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.*;
 
-public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable {
+public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable, Observavel {
 
     private Map<String, Medicamento> medicamentoMap;
 
     public GerenteMedicamentoImpl() {
         medicamentoMap = new HashMap<>();
+        Gravador.getInstance().attach(this);
     }
-
 
     @Override
     public void cadastrarMedicamento(Medicamento m) throws JaExisteException, NullPointerException {
@@ -25,6 +29,7 @@ public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable 
         medicamentoMap.put(m.keyMap(), m);
     }
 
+    @Override
     public List<Medicamento> pesquisarMedicamentoParaSintoma(Sintoma i) {
         assert i != null;
         List<Medicamento> list = new ArrayList<>();
@@ -94,5 +99,19 @@ public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable 
         return sb.toString();
     }
 
+    private final static String NOME_ARQUIVO = "GerenteMedicamento.sisB";
+    private IOTool<Map<String, Medicamento>> io = new IOTool<>();
+    @Override
+    public void gravarse() {
+        io.gravarObjeto(medicamentoMap,NOME_ARQUIVO);
+    }
 
+    @Override
+    public void carregase() {
+        try {
+            medicamentoMap = io.lerObjeto(NOME_ARQUIVO);
+        } catch (FileNotFoundException e) {
+            System.out.println("Arquivo não encontrado");
+        }
+    }
 }

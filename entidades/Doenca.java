@@ -6,6 +6,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Entidade Doença
+ * Classe que sera usada em Medicamente para indicar uma doença,
+ * @see Medicamento
+ * @see Sintoma
+ * */
+
 public class Doenca implements Serializable {
 
     private String nome;

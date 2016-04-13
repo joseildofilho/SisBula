@@ -19,13 +19,18 @@ public class MainGui extends JDialog {
     private JButton buttonCancel;
     private JTextField textField1;
     private JList list1;
+    private JButton OKButton;
+    private JButton cancelarButton;
+    private JComboBox comboBox1;
 
     public MainGui() {
         setContentPane(contentPane);
         setModal(true);
         getRootPane().setDefaultButton(buttonOK);
 
-        sis.carregarGerente();
+        sis.carregarTodos();
+
+
 
         try {
             list1.setListData(sis.getListMedicamento().toArray());
@@ -35,8 +40,6 @@ public class MainGui extends JDialog {
             @Override
             public void windowClosing(WindowEvent e) {
                 super.windowClosing(e);
-                sis.deletarGerenteGravado();
-                sis.gravarGerente();
             }
         });
 
@@ -57,6 +60,8 @@ public class MainGui extends JDialog {
                 onCancel();
             }
         });
+
+
 
         contentPane.registerKeyboardAction(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

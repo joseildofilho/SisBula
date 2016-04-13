@@ -9,8 +9,6 @@ import fabricas.FabricaSubstancia;
 import logica.SisBulaMemory;
 import org.junit.*;
 
-import java.io.FileNotFoundException;
-
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
@@ -60,16 +58,16 @@ public class SisBulaTesteTest {
         doenca3.adicionarSintoma(sintoma4);
 
         //cadastro das doenças e sintomas que os remedios cuidam
-        medicamento1.cadastrarDoenca(doenca1);
-        medicamento1.cadastrarSintoma(sintoma1);
+        medicamento1.cadastrarDoencaNoMedicamento(doenca1);
+        medicamento1.cadastrarSintomaNoMedicamento(sintoma1);
 
-        medicamento2.cadastrarDoenca(doenca2);
-        medicamento2.cadastrarSintoma(sintoma2);
+        medicamento2.cadastrarDoencaNoMedicamento(doenca2);
+        medicamento2.cadastrarSintomaNoMedicamento(sintoma2);
 
-        medicamento3.cadastrarDoenca(doenca3);
-        medicamento3.cadastrarSintoma(sintoma3);
-        medicamento3.cadastrarSintoma(sintoma4);
-        medicamento3.cadastrarSintoma(sintoma5);
+        medicamento3.cadastrarDoencaNoMedicamento(doenca3);
+        medicamento3.cadastrarSintomaNoMedicamento(sintoma3);
+        medicamento3.cadastrarSintomaNoMedicamento(sintoma4);
+        medicamento3.cadastrarSintomaNoMedicamento(sintoma5);
 
         try {
             medicamento1.cadastrarSubstancia(substancia2);
@@ -183,12 +181,12 @@ public class SisBulaTesteTest {
     @Test
     public void testGravacao() {
         testCadastro();
-        sis.gravarGerente();
+        sis.gravarTodos();
     }
 
     @Test
     public void testLeitura() throws JaExisteException {
-        sis.carregarGerente();
+        sis.carregarTodos();
 
         assertEquals(true, sis.pesquisarMedicamentoParaDoenca(doenca1).contains(medicamento1));
         assertEquals(true, sis.pesquisarMedicamentoParaSintoma(sintoma1).contains(medicamento1));

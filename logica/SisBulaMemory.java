@@ -1,5 +1,9 @@
 package logica;
 
+import IO.Gravador;
+import excecoes.NaoAchouException;
+import gerente.GerenteSintomaImpl;
+import interfaces.Dao;
 import dao.GerenteDaoImpl;
 import entidades.Doenca;
 import entidades.Medicamento;
@@ -8,18 +12,21 @@ import entidades.Substancia;
 import excecoes.JaExisteException;
 import gerente.GerenteMedicamentoImpl;
 import interfaces.InterfaceGerente.GerenteMedicamento;
+import interfaces.InterfaceGerente.GerenteSintoma;
+import interfaces.Observador;
 import interfaces.SisBula;
 
-import java.io.FileNotFoundException;
 import java.util.List;
 
 public class SisBulaMemory implements SisBula {
 
-    GerenteMedicamento gerenteMedicamento;
-    GerenteDaoImpl gdi = new GerenteDaoImpl("gerente.sisB");
+    private GerenteMedicamento gerenteMedicamento;
+    private GerenteSintoma gerenteSintoma;
+    private Observador gravador = Gravador.getInstance();
 
     public SisBulaMemory() {
         gerenteMedicamento = new GerenteMedicamentoImpl();
+        gerenteSintoma = new GerenteSintomaImpl();
     }
 
     @Override
@@ -63,20 +70,27 @@ public class SisBulaMemory implements SisBula {
     }
 
     @Override
-    public void gravarGerente() {
-        gdi.gravarGerente(gerenteMedicamento);
+    public void cadastrarSintoma(Sintoma sintoma) throws JaExisteException {
+        gerenteSintoma.cadastrarSintoma(sintoma);
     }
 
     @Override
-    public void carregarGerente() {
-        gerenteMedicamento = gdi.lerGerente();
-        System.out.println(gerenteMedicamento.toString());
+    public List<Sintoma> getTodosSintomas() {
+        return gerenteSintoma.getTodosSintomas();
     }
 
     @Override
-    public void deletarGerenteGravado() {
-        gdi.removerGerente();
+    public Sintoma getSintoma(String sintoma) throws NaoAchouException {
+        return gerenteSintoma.getSintoma(sintoma);
     }
 
+    @Override
+    public void gravarTodos() {
+        gravador.gravarse();
+    }
 
+    @Override
+    public void carregarTodos() {
+        gravador.carregase();
+    }
 }

@@ -4,6 +4,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Substancia compoẽ Medicamento
+ * @see Medicamento
+ * */
+
 public class Substancia implements Serializable {
     private String nome;
 

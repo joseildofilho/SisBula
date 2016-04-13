@@ -1,21 +1,16 @@
 package interfaces;
 
 import interfaces.InterfaceGerente.GerenteMedicamento;
+import interfaces.InterfaceGerente.GerenteSintoma;
 
-public interface SisBula extends GerenteMedicamento {
+public interface SisBula extends GerenteMedicamento,GerenteSintoma {
     /**
-     * Guarda o Gerente em Disco.
+     * Grava todos as entidades de deus gerentes em algo
      * */
-    void gravarGerente();
+    void carregarTodos();
+
     /**
-     * Carrega o gerente que sera usado no sistema.
+     * Carrega todos as entidades em seus respectivos gerentes
      * */
-    void carregarGerente();
-
-    /**
-     * apaga o gerente
-     */
-    void deletarGerenteGravado();
-
-
+    void gravarTodos();
 }

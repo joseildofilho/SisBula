@@ -1,12 +1,17 @@
 package dao;
 
 import IO.IOTool;
+import interfaces.Dao;
 import interfaces.InterfaceGerente.GerenteMedicamento;
 
 import java.io.FileNotFoundException;
 
-
-public class GerenteDaoImpl implements GerenteDao {
+/**
+ * Implementação da interface GerenteDao faz o armazenamento do gerente em arquivo
+ * apartir da Serializable, utilizando uma classe chamada IOTool para realizar o processo de Grvação
+ * basicamente esta classe serve como uma fachada.
+ * */
+public class GerenteDaoImpl implements Dao {
 
     private IOTool<GerenteMedicamento> io = new IOTool();
     private String nomeArquivo;
