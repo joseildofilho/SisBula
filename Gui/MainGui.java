@@ -2,85 +2,107 @@ package Gui;
 
 import entidades.Fabricante;
 import entidades.Medicamento;
+import entidades.Sintoma;
 import excecoes.JaExisteException;
 import fabricas.FabricaMedicamento;
+import fabricas.FabricaSintoma;
 import interfaces.SisBula;
-import logica.SisBulaMemory;
+import logica.SisBulaFacade;
 
 import javax.swing.*;
 import java.awt.event.*;
 
 public class MainGui extends JDialog {
 
-    SisBula sis = new SisBulaMemory();
+    SisBula sis = new SisBulaFacade();
 
     private JPanel contentPane;
-    private JButton buttonOK;
-    private JButton buttonCancel;
-    private JTextField textField1;
-    private JList list1;
-    private JButton OKButton;
-    private JButton cancelarButton;
-    private JComboBox comboBox1;
+    private JButton botaoMedicamento;
+    private JButton botaoClearMedicamento;
+    private JTextField campoMedicamento;
+    private JList medicamentos;
+    private JButton botaoSintoma;
+    private JButton botaoClearSintoma;
+    private JTextField campoSintoma;
+    private JList sintomas;
+    private JList doencas;
 
     public MainGui() {
         setContentPane(contentPane);
         setModal(true);
-        getRootPane().setDefaultButton(buttonOK);
+        getRootPane().setDefaultButton(botaoMedicamento);
 
         sis.carregarTodos();
 
+        prepareList();
 
-
-        try {
-            list1.setListData(sis.getListMedicamento().toArray());
-        } catch (Exception e) {}
-
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent e) {
-                super.windowClosing(e);
-            }
-        });
-
-        buttonOK.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onOK();
-            }
-        });
-
-        buttonCancel.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        });
+        medicamentos.setListData(sis.getListMedicamento().toArray());
+        sintomas.setListData(sis.getTodosSintomas().toArray());
+        doencas.setListData(sis.getTodasDoencas().toArray());
 
         addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent e) {
-                onCancel();
+                sis.gravarTodos();
             }
         });
 
+        contentPane.registerKeyboardAction(e -> onClearMedicamento(), KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
 
 
-        contentPane.registerKeyboardAction(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                onCancel();
-            }
-        }, KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0), JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
     }
 
-    private void onOK() {
-        Medicamento m = FabricaMedicamento.getMedicamento(textField1.getText(), Fabricante.SemFabricante);
+    private void onOKMedicamento() {
+        Medicamento m = FabricaMedicamento.getMedicamento(campoMedicamento.getText(), Fabricante.SemFabricante);
         try {
             sis.cadastrarMedicamento(m);
         } catch (JaExisteException e) {
-
+            //TODO colocar um alerta de cadastro
         }
     }
 
-    private void onCancel() {
-        textField1.setText("");
+    private void onOKSintoma() {
+        Sintoma s = FabricaSintoma.getSintoma(campoSintoma.getText());
+        try {
+            sis.cadastrarSintoma(s);
+        } catch (JaExisteException e) {
+            //TODO colocar um alerta de cadastro
+        }
+
+    }
+
+    private void updateListaMedicamento() {
+        medicamentos.setListData(sis.getListMedicamento().toArray());
+        medicamentos.repaint();
+    }
+
+    private void updateListaSintoma() {
+        sintomas.setListData(sis.getTodosSintomas().toArray());
+        sintomas.repaint();
+    }
+
+    private void onClearMedicamento() {
+        campoMedicamento.setText("");
+    }
+
+    private void onClearSintoma() {
+        campoSintoma.setText("");
+    }
+
+    private void prepareList() {
+        botaoMedicamento.addActionListener(e -> {
+            onOKMedicamento();
+            updateListaMedicamento();
+        });
+
+        botaoClearMedicamento.addActionListener(e -> onClearMedicamento());
+
+        botaoSintoma.addActionListener(e -> {
+            onOKSintoma();
+            updateListaSintoma();
+        });
+
+        botaoClearSintoma.addActionListener(e -> onClearSintoma());
     }
 
     public static void main(String[] args) {

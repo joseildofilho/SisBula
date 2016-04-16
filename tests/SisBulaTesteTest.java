@@ -2,20 +2,19 @@ package tests;
 
 import entidades.*;
 import excecoes.JaExisteException;
+import excecoes.NaoAchouException;
 import fabricas.FabricaDoenca;
 import fabricas.FabricaMedicamento;
 import fabricas.FabricaSintoma;
 import fabricas.FabricaSubstancia;
-import logica.SisBulaMemory;
+import logica.SisBulaFacade;
 import org.junit.*;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public class SisBulaTesteTest {
 
-    SisBulaMemory sis;
+    SisBulaFacade sis;
     Medicamento medicamento1, medicamento2, medicamento3;
     Doenca doenca1, doenca2, doenca3;
     Sintoma sintoma1, sintoma2, sintoma3, sintoma4, sintoma5;
@@ -26,7 +25,7 @@ public class SisBulaTesteTest {
     @Before
     public void setUp() {
         System.out.println("preparando");
-        sis = new SisBulaMemory();
+        sis = new SisBulaFacade();
         //Criação de Medicamentos
         medicamento1 = FabricaMedicamento.getMedicamento("cafe", Fabricante.Ache);
         medicamento2 = FabricaMedicamento.getMedicamento("Coquetel de Remedios", Fabricante.Ache);
@@ -79,15 +78,51 @@ public class SisBulaTesteTest {
     }
 
     @Test
+    public void testCadastroSintoma() {
+
+        try {
+            sis.cadastrarSintoma(sintoma1);
+            sis.cadastrarSintoma(sintoma2);
+            sis.cadastrarSintoma(sintoma3);
+            sis.cadastrarSintoma(sintoma4);
+            sis.cadastrarSintoma(sintoma5);
+            sis.cadastrarSintoma(sintoma1);
+        } catch (JaExisteException e) {
+        }
+        try {
+            assertEquals(sintoma1, sis.getSintoma(sintoma1.getNome()));
+            assertEquals(sintoma2, sis.getSintoma(sintoma2.getNome()));
+            assertEquals(sintoma3, sis.getSintoma(sintoma3.getNome()));
+            assertEquals(sintoma4, sis.getSintoma(sintoma4.getNome()));
+            assertEquals(sintoma5, sis.getSintoma(sintoma5.getNome()));
+            assertNotEquals(sintoma5, sis.getSintoma(sintoma1.getNome()));
+        } catch (NaoAchouException e) {
+        }
+    }
+
+    @Test
+    public void testCadastroDoenca() {
+        try {
+            sis.cadastrarDoenca(doenca1);
+            sis.cadastrarDoenca(doenca2);
+            sis.cadastrarDoenca(doenca3);
+            sis.cadastrarDoenca(doenca1);
+        } catch (JaExisteException e) {
+        }
+        try {
+            assertEquals(doenca1,sis.getDoenca(doenca1.getNome()));
+            assertEquals(doenca2,sis.getDoenca(doenca2.getNome()));
+            assertEquals(doenca3,sis.getDoenca(doenca3.getNome()));
+            assertEquals(doenca3,sis.getSintoma(doenca1.getNome()));
+        } catch (NaoAchouException e) {
+        }
+
+    }
+
+    @Test
     public void testPesquisa() throws JaExisteException {
 
-        testCadastro();
-
-        //Pesquisas no sisBula
-
-        //assertEquals(false, sis.pesquisarMedicamentoParaDoenca(null));
-        //assertEquals(false, sis.pesquisarMedicamentoParaSintoma(null));
-        //devo fazer esse teste ?
+        testCadastroMedicamento();
 
         //testes no medicamento 1
         assertEquals(true, sis.pesquisarMedicamentoParaDoenca(doenca1).contains(medicamento1));
@@ -110,7 +145,7 @@ public class SisBulaTesteTest {
     }
 
     @Test
-    public void testCadastro() {
+    public void testCadastroMedicamento() {
 
         //cadastro no SisBula
         try {
@@ -118,7 +153,7 @@ public class SisBulaTesteTest {
             sis.cadastrarMedicamento(medicamento2);
             sis.cadastrarMedicamento(medicamento3);
         } catch (JaExisteException e) {
-            e.printStackTrace();
+            fail("Falhou no teste cadastro de medicamentos");
         }
         assertEquals(true, sis.existeMedicamento(medicamento1));
         assertEquals(true, sis.existeMedicamento(medicamento2));
@@ -126,31 +161,18 @@ public class SisBulaTesteTest {
 
     }
 
-    @Test
-    public void testCadastroNull() {
-        try {
-            sis.cadastrarMedicamento(null);
-        } catch (Exception e) {
-            System.out.println("lançou um null pointer: " + e.toString());
-        }
+    @Test(expected = NullPointerException.class)
+    public void testCadastroNull() throws NullPointerException, JaExisteException {
+        sis.cadastrarMedicamento(null);
     }
 
-    @Test
-    public void testCadastraMedicamentoRepetido() {
+    @Test(expected = JaExisteException.class)
+    public void testCadastraMedicamentoRepetido() throws JaExisteException {
         //cadastro no SisBula
-        try {
-            sis.cadastrarMedicamento(medicamento1);
-        } catch (JaExisteException e) {
-            assertTrue(true);
-        }
 
-        assertEquals(true, sis.existeMedicamento(medicamento1));
+        sis.cadastrarMedicamento(medicamento1);
+        sis.cadastrarMedicamento(medicamento1);
 
-        try {
-            sis.cadastrarMedicamento(medicamento1);
-            fail();
-        } catch (JaExisteException e) {
-        }
     }
 
     @Test
@@ -180,7 +202,9 @@ public class SisBulaTesteTest {
 
     @Test
     public void testGravacao() {
-        testCadastro();
+        testCadastroMedicamento();
+        testCadastroSintoma();
+        testCadastroDoenca();
         sis.gravarTodos();
     }
 
@@ -205,5 +229,23 @@ public class SisBulaTesteTest {
         assertEquals(false, sis.pesquisarMedicamentoParaSintoma(sintoma1).contains(medicamento3));
         assertEquals(false, sis.pesquisarMedicamentoParaDoenca(doenca1).contains(medicamento3));
         assertEquals(false, sis.pesquisarMedicamentoParaSintoma(sintoma1).contains(medicamento3));
+        //testes Doenca
+        try {
+            assertEquals(doenca1,sis.getDoenca(doenca1.getNome()));
+            assertEquals(doenca2,sis.getDoenca(doenca2.getNome()));
+            assertEquals(doenca3,sis.getDoenca(doenca3.getNome()));
+            assertEquals(doenca3,sis.getSintoma(doenca1.getNome()));
+        } catch (NaoAchouException e) {
+        }
+        //teste Sintoma
+        try {
+            assertEquals(sintoma1, sis.getSintoma(sintoma1.getNome()));
+            assertEquals(sintoma2, sis.getSintoma(sintoma2.getNome()));
+            assertEquals(sintoma3, sis.getSintoma(sintoma3.getNome()));
+            assertEquals(sintoma4, sis.getSintoma(sintoma4.getNome()));
+            assertEquals(sintoma5, sis.getSintoma(sintoma5.getNome()));
+            assertNotEquals(sintoma5, sis.getSintoma(sintoma1.getNome()));
+        } catch (NaoAchouException e) {
+        }
     }
 }

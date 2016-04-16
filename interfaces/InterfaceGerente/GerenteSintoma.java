@@ -28,7 +28,7 @@ public interface GerenteSintoma {
      *Retorna o Sintoma
      *
      * @param sintoma , o nome do sintoma
-     * @return Sintoma o sintoma cadastrado || null caso não exista
+     * @return Sintoma o sintoma cadastrado
      * @throws excecoes.NaoAchouException
      * */
     Sintoma getSintoma(String sintoma) throws NaoAchouException;

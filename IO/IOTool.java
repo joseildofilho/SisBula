@@ -1,6 +1,9 @@
 package IO;
 
+import entidades.Doenca;
+
 import java.io.*;
+import java.util.Map;
 
 public class IOTool <T>{
 
@@ -31,5 +34,6 @@ public class IOTool <T>{
         if(!exists(NOME)) throw new FileNotFoundException();
         new File(NOME).delete();
     }
+
 
 }

@@ -2,15 +2,15 @@ package logica;
 
 import IO.Gravador;
 import excecoes.NaoAchouException;
+import gerente.GerenteDoencaImpl;
 import gerente.GerenteSintomaImpl;
-import interfaces.Dao;
-import dao.GerenteDaoImpl;
 import entidades.Doenca;
 import entidades.Medicamento;
 import entidades.Sintoma;
 import entidades.Substancia;
 import excecoes.JaExisteException;
 import gerente.GerenteMedicamentoImpl;
+import interfaces.InterfaceGerente.GerenteDoenca;
 import interfaces.InterfaceGerente.GerenteMedicamento;
 import interfaces.InterfaceGerente.GerenteSintoma;
 import interfaces.Observador;
@@ -18,15 +18,17 @@ import interfaces.SisBula;
 
 import java.util.List;
 
-public class SisBulaMemory implements SisBula {
+public class SisBulaFacade implements SisBula {
 
     private GerenteMedicamento gerenteMedicamento;
     private GerenteSintoma gerenteSintoma;
+    private GerenteDoenca gerenteDoenca;
     private Observador gravador = Gravador.getInstance();
 
-    public SisBulaMemory() {
+    public SisBulaFacade() {
         gerenteMedicamento = new GerenteMedicamentoImpl();
         gerenteSintoma = new GerenteSintomaImpl();
+        gerenteDoenca = new GerenteDoencaImpl();
     }
 
     @Override
@@ -83,6 +85,22 @@ public class SisBulaMemory implements SisBula {
     public Sintoma getSintoma(String sintoma) throws NaoAchouException {
         return gerenteSintoma.getSintoma(sintoma);
     }
+
+    @Override
+    public void cadastrarDoenca(Doenca doenca) throws JaExisteException {
+        gerenteDoenca.cadastrarDoenca(doenca);
+    }
+
+    @Override
+    public List<Doenca> getTodasDoencas() {
+        return gerenteDoenca.getTodasDoencas();
+    }
+
+    @Override
+    public Doenca getDoenca(String nome) throws NaoAchouException {
+        return gerenteDoenca.getDoenca(nome);
+    }
+
 
     @Override
     public void gravarTodos() {

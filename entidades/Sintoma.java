@@ -50,4 +50,11 @@ public class Sintoma implements Serializable {
     public int hashCode() {
         return getNome().hashCode();
     }
+
+    @Override
+    public String toString() {
+        return "Sintoma{" +
+                "nome='" + nome + '\'' +
+                '}';
+    }
 }

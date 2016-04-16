@@ -55,6 +55,13 @@ public class Doenca implements Serializable {
     }
 
     @Override
+    public String toString() {
+        return "Doenca{" +
+                "nome='" + nome + '\'' +
+                '}';
+    }
+
+    @Override
     public int hashCode() {
         return getNome().hashCode();
     }

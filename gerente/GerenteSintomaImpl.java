@@ -31,6 +31,7 @@ public class GerenteSintomaImpl implements GerenteSintoma, Observavel {
     public void cadastrarSintoma(Sintoma sintoma) throws JaExisteException {
         if (sintomaMap.containsValue(sintoma)) throw new JaExisteException("Ja existe este Sintoma");
         sintomaMap.put(sintoma.getNome(), sintoma);
+        System.out.println("Sintoma Cadastrada: "+sintoma+" Descrição: "+sintoma.getDescricao());
     }
 
     @Override
