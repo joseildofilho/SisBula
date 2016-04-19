@@ -13,7 +13,7 @@ import gerente.GerenteMedicamentoImpl;
 import interfaces.InterfaceGerente.GerenteDoenca;
 import interfaces.InterfaceGerente.GerenteMedicamento;
 import interfaces.InterfaceGerente.GerenteSintoma;
-import interfaces.Observador;
+import interfaces.interfaceIO.Observador;
 import interfaces.SisBula;
 
 import java.util.List;
@@ -104,11 +104,11 @@ public class SisBulaFacade implements SisBula {
 
     @Override
     public void gravarTodos() {
-        gravador.gravarse();
+        gravador.gravar();
     }
 
     @Override
     public void carregarTodos() {
-        gravador.carregase();
+        gravador.carregar();
     }
 }

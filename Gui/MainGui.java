@@ -4,8 +4,7 @@ import entidades.Fabricante;
 import entidades.Medicamento;
 import entidades.Sintoma;
 import excecoes.JaExisteException;
-import fabricas.FabricaMedicamento;
-import fabricas.FabricaSintoma;
+import fabrica.Fabrica;
 import interfaces.SisBula;
 import logica.SisBulaFacade;
 
@@ -14,7 +13,7 @@ import java.awt.event.*;
 
 public class MainGui extends JDialog {
 
-    SisBula sis = new SisBulaFacade();
+    private SisBula sis = new SisBulaFacade();
 
     private JPanel contentPane;
     private JButton botaoMedicamento;
@@ -53,7 +52,7 @@ public class MainGui extends JDialog {
     }
 
     private void onOKMedicamento() {
-        Medicamento m = FabricaMedicamento.getMedicamento(campoMedicamento.getText(), Fabricante.SemFabricante);
+        Medicamento m = Fabrica.getMedicamento(campoMedicamento.getText(), Fabricante.SemFabricante);
         try {
             sis.cadastrarMedicamento(m);
         } catch (JaExisteException e) {
@@ -62,7 +61,7 @@ public class MainGui extends JDialog {
     }
 
     private void onOKSintoma() {
-        Sintoma s = FabricaSintoma.getSintoma(campoSintoma.getText());
+        Sintoma s = Fabrica.getSintoma(campoSintoma.getText());
         try {
             sis.cadastrarSintoma(s);
         } catch (JaExisteException e) {

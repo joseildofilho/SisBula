@@ -1,17 +1,17 @@
 package IO;
 
-import entidades.Doenca;
+import interfaces.interfaceIO.FerramentaGravacao;
 
 import java.io.*;
-import java.util.Map;
 
-public class IOTool <T>{
+public class IOTool <T> implements FerramentaGravacao <T>{
 
     private boolean exists(final String NOME) {
         return new File(NOME).exists();
     }
 
-    public void gravarObjeto(T o,final String NOME) {
+    @Override
+    public void gravarObjeto(T o, final String NOME) {
         try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(NOME))) {
             oos.writeObject(o);
             oos.flush();
@@ -20,6 +20,7 @@ public class IOTool <T>{
         }
     }
 
+    @Override
     public T lerObjeto(final String NOME) throws FileNotFoundException {
         if (!exists(NOME)) throw new FileNotFoundException();
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(NOME))) {
@@ -30,6 +31,7 @@ public class IOTool <T>{
         return null;
     }
 
+    @Override
     public void removerObjeto(final String NOME) throws FileNotFoundException {
         if(!exists(NOME)) throw new FileNotFoundException();
         new File(NOME).delete();

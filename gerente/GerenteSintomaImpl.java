@@ -2,12 +2,12 @@ package gerente;
 
 import IO.Gravador;
 import IO.IOTool;
-import entidades.Medicamento;
 import entidades.Sintoma;
 import excecoes.JaExisteException;
 import excecoes.NaoAchouException;
+import interfaces.interfaceIO.FerramentaGravacao;
 import interfaces.InterfaceGerente.GerenteSintoma;
-import interfaces.Observavel;
+import interfaces.interfaceIO.Observavel;
 
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -48,7 +48,7 @@ public class GerenteSintomaImpl implements GerenteSintoma, Observavel {
     }
 
     private final static String NOME_ARQUIVO = "GerenteSintoma.sisB";
-    private IOTool<Map<String, Sintoma>> io = new IOTool<>();
+    private FerramentaGravacao<Map<String, Sintoma>> io = new IOTool<>();
     @Override
     public void gravarse() {
         io.gravarObjeto(sintomaMap,NOME_ARQUIVO);

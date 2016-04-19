@@ -1,7 +1,7 @@
 package IO;
 
-import interfaces.Observador;
-import interfaces.Observavel;
+import interfaces.interfaceIO.Observador;
+import interfaces.interfaceIO.Observavel;
 
 import java.util.Vector;
 
@@ -35,14 +35,14 @@ public class Gravador implements Observador {
     }
 
     @Override
-    public void gravarse() {
+    public void gravar() {
         for (Observavel o : observaveis) {
             o.gravarse();
         }
     }
 
     @Override
-    public void carregase() {
+    public void carregar() {
         for (Observavel o : observaveis) {
             o.carregase();
         }

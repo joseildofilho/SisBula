@@ -3,10 +3,7 @@ package tests;
 import entidades.*;
 import excecoes.JaExisteException;
 import excecoes.NaoAchouException;
-import fabricas.FabricaDoenca;
-import fabricas.FabricaMedicamento;
-import fabricas.FabricaSintoma;
-import fabricas.FabricaSubstancia;
+import fabrica.Fabrica;
 import logica.SisBulaFacade;
 import org.junit.*;
 
@@ -27,23 +24,23 @@ public class SisBulaTesteTest {
         System.out.println("preparando");
         sis = new SisBulaFacade();
         //Criação de Medicamentos
-        medicamento1 = FabricaMedicamento.getMedicamento("cafe", Fabricante.Ache);
-        medicamento2 = FabricaMedicamento.getMedicamento("Coquetel de Remedios", Fabricante.Ache);
-        medicamento3 = FabricaMedicamento.getMedicamento("Paracetamol", Fabricante.Medley);
+        medicamento1 = Fabrica.getMedicamento("cafe", Fabricante.Ache);
+        medicamento2 = Fabrica.getMedicamento("Coquetel de Remedios", Fabricante.Ache);
+        medicamento3 = Fabrica.getMedicamento("Paracetamol", Fabricante.Medley);
 
 
-        doenca1 = FabricaDoenca.getDoenca("Sono");
-        doenca2 = FabricaDoenca.getDoenca("AIDS");
-        doenca3 = FabricaDoenca.getDoenca("Dengue");
+        doenca1 = Fabrica.getDoenca("Sono");
+        doenca2 = Fabrica.getDoenca("AIDS");
+        doenca3 = Fabrica.getDoenca("Dengue");
 
-        sintoma1 = FabricaSintoma.getSintoma("Sonolencia", "escorar em qualquer canto e dormir");
-        sintoma2 = FabricaSintoma.getSintoma("Perca de inunidade", "Sistema imunologico fica debilitado");
-        sintoma3 = FabricaSintoma.getSintoma("Dor muscular", "Dores nos musculos");
-        sintoma4 = FabricaSintoma.getSintoma("febre", "aumento de temperatura no corpo");
-        sintoma5 = FabricaSintoma.getSintoma("dor de cabeça", "dor forte em alguma região na cabeça");
+        sintoma1 = Fabrica.getSintoma("Sonolencia", "escorar em qualquer canto e dormir");
+        sintoma2 = Fabrica.getSintoma("Perca de inunidade", "Sistema imunologico fica debilitado");
+        sintoma3 = Fabrica.getSintoma("Dor muscular", "Dores nos musculos");
+        sintoma4 = Fabrica.getSintoma("febre", "aumento de temperatura no corpo");
+        sintoma5 = Fabrica.getSintoma("dor de cabeça", "dor forte em alguma região na cabeça");
 
-        substancia1 = FabricaSubstancia.getSubstancia("Paracetamol");
-        substancia2 = FabricaSubstancia.getSubstancia("cafeina");
+        substancia1 = Fabrica.getSubstancia("Paracetamol");
+        substancia2 = Fabrica.getSubstancia("cafeina");
 
         // Medicamento interage com o outro
         medicamento1.cadastrarInteracao(medicamento2);

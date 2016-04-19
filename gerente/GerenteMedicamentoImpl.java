@@ -7,8 +7,9 @@ import entidades.Medicamento;
 import entidades.Sintoma;
 import entidades.Substancia;
 import excecoes.JaExisteException;
-import interfaces.*;
 import interfaces.InterfaceGerente.GerenteMedicamento;
+import interfaces.interfaceIO.FerramentaGravacao;
+import interfaces.interfaceIO.Observavel;
 
 import java.io.FileNotFoundException;
 import java.io.Serializable;
@@ -100,7 +101,8 @@ public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable,
     }
 
     private final static String NOME_ARQUIVO = "GerenteMedicamento.sisB";
-    private IOTool<Map<String, Medicamento>> io = new IOTool<>();
+    private FerramentaGravacao<Map<String, Medicamento>> io = new IOTool<>();
+
     @Override
     public void gravarse() {
         io.gravarObjeto(medicamentoMap,NOME_ARQUIVO);

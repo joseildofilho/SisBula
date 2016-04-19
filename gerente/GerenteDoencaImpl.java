@@ -5,9 +5,10 @@ import IO.IOTool;
 import entidades.Doenca;
 import excecoes.JaExisteException;
 import excecoes.NaoAchouException;
+import gerente.io.GerenteGravacaoImpl;
+import interfaces.interfaceIO.FerramentaGravacao;
 import interfaces.InterfaceGerente.GerenteDoenca;
-import interfaces.Observador;
-import interfaces.Observavel;
+import interfaces.interfaceIO.Observavel;
 
 import java.io.FileNotFoundException;
 import java.util.HashMap;
@@ -47,9 +48,12 @@ public class GerenteDoencaImpl implements GerenteDoenca, Observavel {
         return doencaMap.get(nome);
     }
 
+    //TODO qual das 2 opções é a melhor ?
 
-    private IOTool<Map<String, Doenca>> io = new IOTool();
+    private FerramentaGravacao<Map<String, Doenca>> io = new IOTool();
     private static final String NOME_ARQUIVO = "GerenteDoenca.sisB";
+
+    private GerenteGravacaoImpl<Map<String, Doenca>> gerenteGravacao = new GerenteGravacaoImpl<>(NOME_ARQUIVO);
 
     @Override
     public void gravarse() {
