@@ -46,4 +46,12 @@ public class Fabrica {
     public static Substancia getSubstancia(String nome) {
         return new Substancia(nome);
     }
+
+    public static Causa getCausa() {
+        return new Causa();
+    }
+
+    public static Causa getCausa(String tipo) {
+        return new Causa(tipo);
+    }
 }

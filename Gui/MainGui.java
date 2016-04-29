@@ -6,7 +6,7 @@ import entidades.Sintoma;
 import excecoes.JaExisteException;
 import fabrica.Fabrica;
 import interfaces.SisBula;
-import logica.SisBulaFacade;
+import fachada.SisBulaFacade;
 
 import javax.swing.*;
 import java.awt.event.*;
@@ -52,7 +52,7 @@ public class MainGui extends JDialog {
     }
 
     private void onOKMedicamento() {
-        Medicamento m = Fabrica.getMedicamento(campoMedicamento.getText(), Fabricante.SemFabricante);
+        Medicamento m = Fabrica.getMedicamento(campoMedicamento.getText(), Fabricante.FABRICANTE_DESCONHECIDO);
         try {
             sis.cadastrarMedicamento(m);
         } catch (JaExisteException e) {

@@ -19,6 +19,14 @@ public interface GerenteSintoma {
     void cadastrarSintoma(Sintoma sintoma) throws JaExisteException;
 
     /**
+     * Cadatra o medicamento apartir da String
+     *
+     * @param nome nome do Sintoma  aser cadastrado
+     * @throws JaExisteException
+     * */
+    void cadastrarSintoma(String nome) throws JaExisteException;
+
+    /**
      * Retorna a Lista de todos os Sintoma cadastrados no sistema
      *
      * @return List , a lista sera retornada vazia caso não exista nada
@@ -31,5 +39,5 @@ public interface GerenteSintoma {
      * @return Sintoma o sintoma cadastrado
      * @throws excecoes.NaoAchouException
      * */
-    Sintoma getSintoma(String sintoma) throws NaoAchouException;
+    Sintoma getSintoma(String sintoma);
 }

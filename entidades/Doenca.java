@@ -1,9 +1,9 @@
 package entidades;
 
+import excecoes.JaExisteException;
+
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -18,6 +18,8 @@ public class Doenca implements Serializable {
     private String nome;
     private Map<String, Sintoma> sintomas;
 
+    private Map<String, Causa> causas;
+
     public Doenca() {
         this("sem nome");
     }
@@ -25,14 +27,20 @@ public class Doenca implements Serializable {
     public Doenca(String nome) {
         this.nome = nome;
         this.sintomas = new HashMap<>();
+        this.causas =  new HashMap<>();
     }
 
     public Map<String, Sintoma> getSintomas() {
         return sintomas;
     }
 
-    public void adicionarSintoma(Sintoma s) {
-        sintomas.put(nome, s);
+    public void adicionarSintoma(Sintoma s) throws JaExisteException {
+        if(sintomas.containsValue(s)) throw new JaExisteException("Ja existe este Sintoma");
+        sintomas.put(s.getNome(), s);
+    }
+
+    public boolean possuiCausa(String nome) {
+        return causas.containsKey(nome);
     }
 
     public String getNome() {
@@ -41,6 +49,15 @@ public class Doenca implements Serializable {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public Map<String, Causa> getCausas() {
+        return causas;
+    }
+
+    public void adicionarCausa(Causa causa) throws JaExisteException {
+        if(causas.containsValue(causa)) throw new JaExisteException("Ja existe esta causa");
+        causas.put(causa.getTipo(),causa);
     }
 
     @Override

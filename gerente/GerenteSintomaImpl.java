@@ -5,6 +5,7 @@ import IO.IOTool;
 import entidades.Sintoma;
 import excecoes.JaExisteException;
 import excecoes.NaoAchouException;
+import fabrica.Fabrica;
 import interfaces.interfaceIO.FerramentaGravacao;
 import interfaces.InterfaceGerente.GerenteSintoma;
 import interfaces.interfaceIO.Observavel;
@@ -31,7 +32,12 @@ public class GerenteSintomaImpl implements GerenteSintoma, Observavel {
     public void cadastrarSintoma(Sintoma sintoma) throws JaExisteException {
         if (sintomaMap.containsValue(sintoma)) throw new JaExisteException("Ja existe este Sintoma");
         sintomaMap.put(sintoma.getNome(), sintoma);
-        System.out.println("Sintoma Cadastrada: "+sintoma+" Descrição: "+sintoma.getDescricao());
+        System.out.println("Sintoma Cadastrada: " + sintoma + " Descrição: " + sintoma.getDescricao());
+    }
+
+    @Override
+    public void cadastrarSintoma(String nome) throws JaExisteException {
+        cadastrarSintoma(Fabrica.getSintoma(nome));
     }
 
     @Override
@@ -42,16 +48,21 @@ public class GerenteSintomaImpl implements GerenteSintoma, Observavel {
     }
 
     @Override
-    public Sintoma getSintoma(String sintoma) throws NaoAchouException {
-        if (!sintomaMap.containsKey(sintoma)) throw new NaoAchouException();
-        return sintomaMap.get(sintoma);
+    public Sintoma getSintoma(String sintoma) {
+        //todo verificar essa opção aqui depois
+        if (sintomaMap.containsKey(sintoma))
+            return sintomaMap.get(sintoma);
+        Sintoma sin = Fabrica.getSintoma(sintoma);
+        sintomaMap.put(sin.getNome(),sin);
+        return sin;
     }
 
     private final static String NOME_ARQUIVO = "GerenteSintoma.sisB";
     private FerramentaGravacao<Map<String, Sintoma>> io = new IOTool<>();
+
     @Override
     public void gravarse() {
-        io.gravarObjeto(sintomaMap,NOME_ARQUIVO);
+        io.gravarObjeto(sintomaMap, NOME_ARQUIVO);
     }
 
     @Override

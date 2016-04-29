@@ -16,10 +16,19 @@ public class Medicamento implements Serializable {
     private Map<String, Sintoma> indicadoSintoma;
     private Map<String, Doenca> indicadoDoenca;
     private Map<String, Substancia> substancias;
+
+    public Fabricante getFabricante() {
+        return fabricante;
+    }
+
     private Fabricante fabricante;
 
     public Medicamento() {
-        this("sem nome", Fabricante.SemFabricante);
+        this("sem nome", Fabricante.FABRICANTE_DESCONHECIDO);
+    }
+
+    public Medicamento(String nome) {
+        this(nome,Fabricante.FABRICANTE_DESCONHECIDO);
     }
 
     public Medicamento(String nome, Fabricante fab) {
@@ -60,8 +69,16 @@ public class Medicamento implements Serializable {
         return indicadoDoenca.containsValue(i);
     }
 
+    public boolean indicadoParaDoenca(String i) {
+        return indicadoDoenca.containsKey(i);
+    }
+
     public boolean indicadoParaSintoma(Sintoma i) {
         return indicadoSintoma.containsValue(i);
+    }
+
+    public boolean indicadoParaSintoma(String i) {
+        return indicadoSintoma.containsKey(i);
     }
 
     public boolean ECompostoPor(Substancia s) {

@@ -3,5 +3,5 @@ package entidades;
 import java.io.Serializable;
 
 public enum Fabricante implements Serializable{
-    SemFabricante,NeoQuimica,Ache,Heisenberg,Medley;
+    NeoQuimica,Ache,Heisenberg,Medley, FABRICANTE_DESCONHECIDO,MEDLEY;
 }

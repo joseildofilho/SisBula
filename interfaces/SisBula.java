@@ -1,22 +1,30 @@
 package interfaces;
 
-import entidades.Doenca;
-import entidades.Medicamento;
-import entidades.Sintoma;
-import entidades.Substancia;
+import entidades.*;
 import excecoes.JaExisteException;
 import excecoes.NaoAchouException;
-import interfaces.InterfaceGerente.GerenteMedicamento;
-import interfaces.InterfaceGerente.GerenteSintoma;
 
 import java.util.List;
 
 public interface SisBula {
+
     void cadastrarMedicamento(Medicamento m) throws JaExisteException;
+
+    void cadastrarMedicamento(String m) throws JaExisteException;
+
+    void cadastrarMedicamentoParaDoenca(String nome,String doenca);
+
+    void cadastrarMedicamentoParaSintoma(String medicamento, String sintoma);
+
+    Medicamento pesquisarMedicamento(String m, Fabricante fab);
+
+    Medicamento pesquisarMedicamento(String nome);
 
     List<Medicamento> pesquisarMedicamentoParaSintoma(Sintoma i);
 
     List<Medicamento> pesquisarMedicamentoParaDoenca(Doenca i);
+
+    List<Medicamento> pesquisaMedicamentosDoFabricante(Fabricante fab);
 
     void removerMedicamento(Medicamento m);
 
@@ -26,7 +34,11 @@ public interface SisBula {
 
     List<Medicamento> pesquisarPorInteracao(Medicamento medicamento);
 
+    public List<Medicamento> pesquisarMedicamentosPara(String nome);
+
     List<Medicamento> getListMedicamento();
+
+    void cadastrarSintoma(String nome) throws JaExisteException;
 
     void cadastrarSintoma(Sintoma sintoma) throws JaExisteException;
 
@@ -34,19 +46,25 @@ public interface SisBula {
 
     Sintoma getSintoma(String sintoma) throws NaoAchouException;
 
+    void cadastrarDoenca(String doenca) throws JaExisteException;
+
     void cadastrarDoenca(Doenca doenca) throws JaExisteException;
 
     List<Doenca> getTodasDoencas();
 
-    Doenca getDoenca(String nome) throws NaoAchouException;
+    void cadastraSintomaDeDoenca(String doenca, String sintoma) throws JaExisteException;
+
+    Doenca getDoenca(String nome);
 
     /**
      * Grava todos as entidades de deus gerentes em algo
-     * */
+     */
     void carregarTodos();
 
     /**
      * Carrega todos as entidades em seus respectivos gerentes
-     * */
+     */
     void gravarTodos();
+
+    void cadastraPossivelCausaDeDoenca(String doenca, String causa) throws JaExisteException;
 }

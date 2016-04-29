@@ -1,7 +1,5 @@
 package interfaces.interfaceIO;
 
-import IO.IOTool;
-
 /**
  * Created by joseildo on 13/04/16.
  */

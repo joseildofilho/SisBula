@@ -1,12 +1,9 @@
 package interfaces.InterfaceGerente;
 
-import entidades.Doenca;
-import entidades.Medicamento;
-import entidades.Sintoma;
-import entidades.Substancia;
+import entidades.*;
 import excecoes.JaExisteException;
+import fabrica.Fabrica;
 
-import java.awt.*;
 import java.io.Serializable;
 import java.util.List;
 
@@ -22,6 +19,36 @@ public interface GerenteMedicamento extends Serializable{
     * */
     void cadastrarMedicamento(Medicamento m) throws JaExisteException;
     /**
+     * Cria o medicamento e o cadastra caso não exista no sistema
+     * @param m Nome do medicamento a ser criado
+     * @throws JaExisteException caso o medicamento ja exista
+     * */
+    void cadastrarMedicamento(String m) throws JaExisteException;
+
+    /**
+     * Pesquisa medicamento para doença ou para Sintoma
+     * @param nome doença ou sintoma
+     * @return List de medicamentos para os casos
+     * */
+    List<Medicamento> pesquisarPara(String nome);
+
+    /**
+     * Pesquisa o medicamento pelo nome
+     *
+     * @param nome nome do cmedicamento a ser pesquisado
+     * @throws JaExisteException
+     * */
+    Medicamento pesquisarMedicamento(String nome);
+
+    /**
+     * Pesquisa o medicamento pelo nome e pelo fabricante
+     * @param m Nome do Medicamento
+     * @param fab Fabricante do medicamento
+     * @return medicamento pesquisa || null caso não tenha nada
+     * */
+    Medicamento pesquisarMedicamento(String m, Fabricante fab);
+
+    /**
     * Pesquisa um Medicamento no sistema para o sintoma.
     * @param i o Medicamento a ser pesquisado
     * @return List Null se não houver nenhum item na pesquisa
@@ -34,6 +61,13 @@ public interface GerenteMedicamento extends Serializable{
      * @return List Null se não houver nenhum item na pesquisa
      * */
     List<Medicamento> pesquisarMedicamentoParaDoenca(Doenca i);
+
+    /**
+     * Pesquisa todas os Medicamentos pelo fabricante
+     * @param fab o Fabricante para ser pesquisado
+     * @return List de Medicamentos
+     * */
+    List<Medicamento> pesquisaMedicamentosDoFabricante(Fabricante fab);
 
     /**
      * Remove o Medicamento do sistema.

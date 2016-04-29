@@ -2,11 +2,9 @@ package gerente;
 
 import IO.Gravador;
 import IO.IOTool;
-import entidades.Doenca;
-import entidades.Medicamento;
-import entidades.Sintoma;
-import entidades.Substancia;
+import entidades.*;
 import excecoes.JaExisteException;
+import fabrica.Fabrica;
 import interfaces.InterfaceGerente.GerenteMedicamento;
 import interfaces.interfaceIO.FerramentaGravacao;
 import interfaces.interfaceIO.Observavel;
@@ -15,7 +13,7 @@ import java.io.FileNotFoundException;
 import java.io.Serializable;
 import java.util.*;
 
-public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable, Observavel {
+public class GerenteMedicamentoImpl implements GerenteMedicamento, Observavel {
 
     private Map<String, Medicamento> medicamentoMap;
 
@@ -29,6 +27,37 @@ public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable,
         if (existeMedicamento(m)) throw new JaExisteException("Medicamento ja existe");
         medicamentoMap.put(m.keyMap(), m);
     }
+
+    @Override
+    public void cadastrarMedicamento(String m) throws JaExisteException {
+        Medicamento med = Fabrica.getMedicamento();
+        med.setNome(m);
+        cadastrarMedicamento(med);
+    }
+
+    @Override
+    public List<Medicamento> pesquisarPara(String nome) {
+        List<Medicamento> temp = new ArrayList<>();
+
+        for(Medicamento m: medicamentoMap.values()) {
+            if(m.indicadoParaSintoma(nome) || m.indicadoParaDoenca(nome)) temp.add(m);
+        }
+        return temp;
+    }
+
+    @Override
+    public Medicamento pesquisarMedicamento(String nome) {
+        for(Medicamento m : medicamentoMap.values()) {
+            if(m.getNome().equals(nome)) return m;
+        }
+        return null;
+    }
+
+    @Override
+    public Medicamento pesquisarMedicamento(String m, Fabricante fab) {
+        return medicamentoMap.get(m+fab.name());
+    }
+
 
     @Override
     public List<Medicamento> pesquisarMedicamentoParaSintoma(Sintoma i) {
@@ -48,6 +77,15 @@ public class GerenteMedicamentoImpl implements GerenteMedicamento, Serializable,
             if (m.indicadoParaDoenca(i)) list.add(m);
         }
         return list;
+    }
+
+    @Override
+    public List<Medicamento> pesquisaMedicamentosDoFabricante(Fabricante fab) {
+        List<Medicamento> temp = new ArrayList<>();
+        for(Medicamento m:medicamentoMap.values()) {
+            if(m.getFabricante().name().equals(fab.name())) temp.add(m);
+        }
+        return temp;
     }
 
     @Override
